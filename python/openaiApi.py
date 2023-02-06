@@ -14,7 +14,7 @@ def snnd_openai_text(question_json_str):
             prompt=generate_prompt(question_json_str),
             temperature=0.7,
             #     temperature min 0 ，max0.9
-            max_tokens=2024,
+            max_tokens=520, # 2024
             top_p=1,
             stop=["Human:", "AI:"],  # ["wunike:","sage:"]  ["Human:", "AI:"]
             frequency_penalty=0,

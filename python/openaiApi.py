@@ -31,8 +31,8 @@ def snnd_openai_text(question_json_str, open_id):
             # return "问："+question_json_str+" \n答："+response.choices[0].text
             return resp_text
         except Exception as e:
-            logging.WARNING(e)
-            return "熬，你抓到了一个\"AI API\"接口异常。"
+            logging.warn(e)
+            return "恭喜，你抓到了一个异常，他说：" + str(e)
 
 
 def generate_prompt(question_json_str, open_id):

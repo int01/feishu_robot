@@ -3,6 +3,7 @@ import os
 
 host = os.getenv("REDIS_HOST")
 port = os.getenv("REDIS_PORT")
+MAX_LEN_TOKEN = os.getenv("MAX_LEN_TOKEN")
 
 pool = redis.ConnectionPool(host=host, port=port, decode_responses=True)
 r = redis.Redis(connection_pool=pool)
@@ -51,7 +52,7 @@ def build_req_msg_txt(userOpenId, text):
         r_text = get_msg_txt(userOpenId) + "\n\n" + text
 
         # 临时的处理逻辑
-        if len(r_text) > 1000:
+        if len(r_text) > 2048 - 24:  # int(MAX_LEN_TOKEN) - 24:
             set_msg_txt(userOpenId, text)
             return text
 

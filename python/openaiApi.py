@@ -22,7 +22,7 @@ def snnd_openai_text(question_json_str):
         )
         print("openAi api response text --->" + response.choices[0].text)
         # return "问："+question_json_str+" \n答："+response.choices[0].text
-        return response.choices[0].text
+        return response.choices[0].text.lstrip('\n')
     return "OPENAI PAI 接口没有返回内容，或请求参数错误。"
 
 

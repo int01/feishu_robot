@@ -12,4 +12,4 @@ def dict_2_obj(d: dict):
     return Obj(d)
 
 def resp_replace(txt):
-    return txt.replace("\n\n","").replace("\n","\\n").replace('\"',"\\\"")
+    return txt.replace("\n\n","\n").replace("\n","\\n").replace('\"',"\\\"")

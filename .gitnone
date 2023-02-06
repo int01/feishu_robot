@@ -1,2 +1,2 @@
-.idea
-python/venv
+.idea/
+/python/venv

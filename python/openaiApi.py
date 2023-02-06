@@ -7,14 +7,14 @@ app = Flask(__name__)
 openai.api_key = os.getenv("OPENAI_API_KEY")
 # https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/im-v1/message/events/receive
 
-def snnd_openai_text(question_json_str):
+def snnd_openai_text(question_json_str, open_id):
     if request.method == "POST":
         response = openai.Completion.create(
             model="text-davinci-003",
-            prompt=generate_prompt(question_json_str),
+            prompt=generate_prompt(question_json_str, open_id),
             temperature=0.7,
             #     temperature min 0 ，max0.9
-            max_tokens=520, # 2024
+            max_tokens=1024, # 2024
             top_p=1,
             stop=["Human:", "AI:"],  # ["wunike:","sage:"]  ["Human:", "AI:"]
             frequency_penalty=0,
@@ -26,7 +26,7 @@ def snnd_openai_text(question_json_str):
     return "OPENAI PAI 接口没有返回内容，或请求参数错误。"
 
 
-def generate_prompt(question_json_str):
+def generate_prompt(question_json_str, open_id):
     """ 对于连续性的提问 需要将聊天记录一起发送，用'\n\n'分隔每句话 TODO """
     print("你说 --> " + question_json_str)
     return question_json_str.capitalize()

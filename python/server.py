@@ -49,7 +49,7 @@ def message_receive_event_handler(req_data: MessageReceiveEvent):
     # print("message_id --", message.message_id)
     # print (if_msg_value_repetition(message.message_id))
     if not if_msg_value_repetition(message.message_id):
-        text_content = resp_replace(snnd_openai_text(json.loads(message.content)["text"]))
+        text_content = resp_replace(snnd_openai_text(json.loads(message.content)["text"], open_id))
         # text_content_resp = str({"text": text_content.capitalize()})
         # .replace("\n","")
         text_content_resp = "{\"text\":\"" + str(text_content.capitalize()) + "\"}"

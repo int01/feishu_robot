@@ -46,13 +46,16 @@ def get_msg_txt(userOpenId):
 
 
 def build_req_msg_txt(userOpenId, text):
-    """ 处理连续性的提问 需要将聊天记录一起发送，用'\n\n'分隔每句话 TODO """
+    """ 处理连续性的提问 需要将聊天记录一起发送，用'\n\n'分隔每句话 """
     key = redis_msg_txt_key + userOpenId
     if r.exists(key):
-        r_text = get_msg_txt(userOpenId) + "\n\n" + text
-
+        r_text = ""
+        if get_msg_txt(userOpenId) is not None:
+            r_text = get_msg_txt(userOpenId) + "\n\n" + text
+        else:
+            r_text = text
         # 临时的处理逻辑
-        if len(r_text) > 2048 - 24:  # int(MAX_LEN_TOKEN) - 24:
+        if len(r_text) > 1024 - 24:  # int(MAX_LEN_TOKEN) - 24:
             set_msg_txt(userOpenId, text)
             return text
 
@@ -65,5 +68,9 @@ def build_req_msg_txt(userOpenId, text):
 
 def build_resp_msg_txt(userOpenId, text):
     """将ai的回复加到问句中"""
-    r_text = get_msg_txt(userOpenId) + "\n" + text
+    r_text = ""
+    if get_msg_txt(userOpenId) is not None:
+        r_text = get_msg_txt(userOpenId) + "\n\n" + text
+    else:
+        r_text = text
     set_msg_txt(userOpenId, r_text)

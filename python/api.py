@@ -25,8 +25,31 @@ class MessageApiClient(object):
     def send_text_with_open_id(self, open_id, content):
         self.send("open_id", open_id, "text", content)
 
+    def send_text_with_chat_id(self, chat_id, content):
+        self.send("chat_id", chat_id, "text", content)
+
+    def send_reply_text_with_message_id(self, message_id, content):
+        self.send_reply(message_id, "text", content)
+
+    def send_reply(self, message_id, msg_type, content):
+        self._authorize_tenant_access_token()
+        url = "{}{}/reply".format(
+            self._lark_host, MESSAGE_URI + "/" + message_id
+        )
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + self.tenant_access_token,
+        }
+        req_body = {
+            "content": content,
+            "msg_type": msg_type,
+        }
+        resp = requests.post(url=url, headers=headers, json=req_body)
+        MessageApiClient._check_error_response(resp)
+
     def send(self, receive_id_type, receive_id, msg_type, content):
-        # send message to user, implemented based on Feishu open api capability. doc link: https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/im-v1/message/create
+        # send message to user, implemented based on Feishu open api capability.
+        # doc link: https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/im-v1/message/create
         self._authorize_tenant_access_token()
         url = "{}{}?receive_id_type={}".format(
             self._lark_host, MESSAGE_URI, receive_id_type

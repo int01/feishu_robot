@@ -2,6 +2,7 @@ import logging
 import os
 
 import openai
+import traceback
 from flask import Flask, redirect, render_template, request, url_for
 from redisUtil import build_req_msg_txt, build_resp_msg_txt
 
@@ -20,7 +21,7 @@ def snnd_openai_text(question_json_str, open_id):
                 prompt=generate_prompt(question_json_str, open_id),
                 temperature=0.7,
                 #     temperature min 0 ，max0.9
-                max_tokens=2048,#int(MAX_LEN_TOKEN),
+                max_tokens=1024,#int(MAX_LEN_TOKEN),
                 top_p=1,
                 stop=["Human:", "AI:"],  # ["wunike:","sage:"]  ["Human:", "AI:"]
                 frequency_penalty=0,
@@ -28,13 +29,14 @@ def snnd_openai_text(question_json_str, open_id):
             )
             resp_text = response.choices[0].text.lstrip('\n')
             print("openAi api response text --->" + resp_text)
-            build_resp_msg_txt(open_id, resp_text)
             if resp_text == "" or resp_text is None:
                 return "\"AI\"没有回复您的消息，这是一句开发者留下的提示回馈。"
             # return "问："+question_json_str+" \n答："+response.choices[0].text
+            build_resp_msg_txt(open_id, resp_text)
             return resp_text
         except Exception as e:
-            logging.warn(e)
+            # logging.warn(e)
+            print(traceback.format_exc())
             return "AI没有回复你的问题，但是你抓到了一个异常，他说：" + str(e)
 
 

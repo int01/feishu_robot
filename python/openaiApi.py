@@ -16,12 +16,13 @@ MAX_LEN_TOKEN = os.getenv("MAX_LEN_TOKEN")
 def snnd_openai_text(question_json_str, open_id):
     if request.method == "POST":
         try:
+            prompt = generate_prompt(question_json_str, open_id)
             response = openai.Completion.create(
                 model="text-davinci-003",
-                prompt=generate_prompt(question_json_str, open_id),
-                temperature=0.7,
+                prompt=prompt,
+                temperature=0.9,
                 #     temperature min 0 ，max0.9
-                max_tokens=1024,#int(MAX_LEN_TOKEN),
+                max_tokens=1024,  # int(MAX_LEN_TOKEN),len(prompt) + 24
                 top_p=1,
                 stop=["Human:", "AI:"],  # ["wunike:","sage:"]  ["Human:", "AI:"]
                 frequency_penalty=0,

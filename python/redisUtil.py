@@ -1,5 +1,6 @@
 import redis
 import os
+import json
 
 host = os.getenv("REDIS_HOST")
 port = os.getenv("REDIS_PORT")
@@ -11,7 +12,8 @@ r = redis.Redis(connection_pool=pool)
 # r = redis.Redis(host=host, port=port, decode_responses=True)
 
 redis_msg_key = "MESSIGE_ID:"
-redis_msg_txt_key = "USER_OPENID:"
+redis_msg_txt_key = "MSG:TEXT:USER_OPENID:"
+redis_msg_jsonarr_key = "MSG:JSONARR:USER_OPENID:"
 
 
 def set_msg(msgId):
@@ -45,6 +47,15 @@ def get_msg_txt(userOpenId):
     return r.get(redis_msg_txt_key + userOpenId)
 
 
+def set_msg_arr_json(userOpenId, text):
+    """过期时间5m"""
+    r.set(redis_msg_jsonarr_key + userOpenId, json.dumps(text), ex=30)
+
+
+def get_msg_arr_json(userOpenId):
+    return json.loads(r.get(redis_msg_jsonarr_key + userOpenId))
+
+
 def build_req_msg_txt(userOpenId, text):
     """ 处理连续性的提问 需要将聊天记录一起发送，用'\n\n'分隔每句话 """
     key = redis_msg_txt_key + userOpenId
@@ -74,3 +85,31 @@ def build_resp_msg_txt(userOpenId, text):
     else:
         r_text = text
     set_msg_txt(userOpenId, r_text)
+
+
+def build_req_msg_arr_json(userOpenId, text):
+    """ 处理连续性的提问 需要将聊天记录一起发送 """
+    key = redis_msg_jsonarr_key + userOpenId
+    r_text = []
+    if r.exists(key) and get_msg_arr_json(userOpenId) is not None:
+        r_text = get_msg_arr_json(userOpenId)
+        # json.loads(
+        # print("----------", r_text, dir(r_text))
+        # print(json.loads(r_text))
+        r_text.append(text)
+    else:
+        r_text.append(text)
+    # print(r_text)
+    set_msg_arr_json(userOpenId, r_text)
+    return r_text
+
+
+def build_resp_msg_arr_json(userOpenId, text):
+    """将ai的回复加到问句中"""
+    r_text = []
+    if get_msg_arr_json(userOpenId) is not None:
+        r_text = get_msg_arr_json(userOpenId)
+        r_text.append(text)
+    else:
+        r_text.append(text)
+    set_msg_arr_json(userOpenId, r_text)

@@ -8,7 +8,7 @@ from api import MessageApiClient
 from event import MessageReceiveEvent, UrlVerificationEvent, EventManager
 from flask import Flask, jsonify
 from dotenv import load_dotenv, find_dotenv
-from openaiApi import snnd_openai_text
+from openaiApi35 import snnd_openai_text
 from utils import resp_replace
 from redisUtil import if_msg_value_repetition
 

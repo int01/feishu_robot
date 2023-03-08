@@ -17,7 +17,7 @@ def snnd_openai_text(question_json_str, open_id):
     if request.method == "POST":
         try:
             message_arr_str = generate_prompt(question_json_str, open_id)
-            print(message_arr_str)
+            # print(message_arr_str)
             response = openai.ChatCompletion.create(
                 model="gpt-3.5-turbo",
                 messages=message_arr_str
@@ -28,9 +28,8 @@ def snnd_openai_text(question_json_str, open_id):
                 #     {"role": "user", "content": "Where was it played?"}
                 # ]
             )
-            print(response)
+            # print(response)
             resp_text = response.choices[0].message.content.lstrip('\n')
-            print("openAi api response text --->" + resp_text)
             if resp_text == "" or resp_text is None:
                 return "\"AI\"没有回复您的消息，这是一句开发者留下的提示回馈。"
             # {"role": "helper", "content": "You are a helpful assistant."},
@@ -44,7 +43,6 @@ def snnd_openai_text(question_json_str, open_id):
 
 def generate_prompt(question_json_str, open_id):
     msg_json_arr = {"role": "user", "content": question_json_str}
-    # print(msg_json_arr)
     req_arr = build_req_msg_arr_json(open_id, msg_json_arr)
-    print("open_id 说 --> ", open_id, req_arr)
+    # print("open_id 说 --> ", open_id, req_arr)
     return req_arr

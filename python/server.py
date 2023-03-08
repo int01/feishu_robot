@@ -77,7 +77,7 @@ def message_receive_event_handler(req_data: MessageReceiveEvent):
                     # text_content_resp = str({"text": text_content.capitalize()})
                         # .replace("\n","")
                     text_content_resp = "{\"text\":\"" + str(text_content.capitalize()) + "\"}"
-                    print("回复你 text_content_resp--- 》" + text_content_resp)
+                    # print("回复你 text_content_resp--- 》" + text_content_resp)
                     message_api_client.send_reply_text_with_message_id(message.message_id, text_content_resp)
             return jsonify()
         else:
@@ -85,7 +85,7 @@ def message_receive_event_handler(req_data: MessageReceiveEvent):
             # text_content_resp = str({"text": text_content.capitalize()})
             # .replace("\n","")
             text_content_resp = "{\"text\":\"" + str(text_content.capitalize()) + "\"}"
-            print("我回复你 text_content_resp--- 》" + text_content_resp)
+            # print("我回复你 text_content_resp--- 》" + text_content_resp)
             message_api_client.send_text_with_open_id(open_id, text_content_resp)
             return jsonify()
     return jsonify()

@@ -4,9 +4,10 @@ import json
 
 host = os.getenv("REDIS_HOST")
 port = os.getenv("REDIS_PORT")
+password = os.getenv("REDIS_PASSWORD")
 MAX_LEN_TOKEN = os.getenv("MAX_LEN_TOKEN")
 
-pool = redis.ConnectionPool(host=host, port=port, decode_responses=True)
+pool = redis.ConnectionPool(host=host, port=port, password=password, decode_responses=True)
 r = redis.Redis(connection_pool=pool)
 
 # r = redis.Redis(host=host, port=port, decode_responses=True)

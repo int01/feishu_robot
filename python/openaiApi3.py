@@ -43,5 +43,5 @@ def snnd_openai_text(question_json_str, open_id):
 
 def generate_prompt(question_json_str, open_id):
     req_text = build_req_msg_txt(open_id, question_json_str)
-    print("open_id 说 --> ", open_id, req_text)
+    # print("open_id 说 --> ", open_id, req_text)
     return req_text.capitalize()

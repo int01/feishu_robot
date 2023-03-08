@@ -44,5 +44,5 @@ def snnd_openai_text(question_json_str, open_id):
 def generate_prompt(question_json_str, open_id):
     msg_json_arr = {"role": "user", "content": question_json_str}
     req_arr = build_req_msg_arr_json(open_id, msg_json_arr)
-    # print("open_id 说 --> ", open_id, req_arr)
+    print("open_id 说 --> ", open_id, req_arr)
     return req_arr

@@ -6,9 +6,15 @@ import traceback
 from flask import Flask, redirect, render_template, request, url_for
 from redisUtil import build_req_msg_arr_json, build_resp_msg_arr_json
 
+from dotenv import load_dotenv, find_dotenv
+# load env parameters form file named .env
+# load_dotenv(find_dotenv())
+load_dotenv(dotenv_path='.aichatenv',override=True)
+
 app = Flask(__name__)
 openai.api_key = os.getenv("OPENAI_API_KEY")
-MAX_LEN_TOKEN = os.getenv("MAX_LEN_TOKEN")
+
+# MAX_LEN_TOKEN = os.getenv("MAX_LEN_TOKEN")
 
 
 # https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/im-v1/message/events/receive
@@ -33,7 +39,7 @@ def snnd_openai_text(question_json_str, open_id):
             if resp_text == "" or resp_text is None:
                 return "\"AI\"没有回复您的消息，这是一句开发者留下的提示回馈。"
             # {"role": "helper", "content": "You are a helpful assistant."},
-            build_resp_msg_arr_json(open_id, {"role": "assistant", "content": resp_text})
+            # build_resp_msg_arr_json(open_id, {"role": "assistant", "content": resp_text})
             return resp_text
         except Exception as e:
             # logging.warn(e)

@@ -1,4 +1,5 @@
 Flask==2.0.2
+gevent
 python-dotenv
 requests
 pycryptodome

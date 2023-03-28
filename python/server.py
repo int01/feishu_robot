@@ -16,9 +16,10 @@ from utils import resp_replace
 from redisUtil import if_msg_value_repetition
 
 from dotenv import load_dotenv, find_dotenv
+
 # load env parameters form file named .env
 # load_dotenv(find_dotenv())
-load_dotenv(dotenv_path='.aichatenv',override=True)
+load_dotenv(dotenv_path='.aichatenv', override=True)
 
 app = Flask(__name__)
 
@@ -29,7 +30,6 @@ VERIFICATION_TOKEN = os.getenv("VERIFICATION_TOKEN")
 ENCRYPT_KEY = os.getenv("ENCRYPT_KEY")
 LARK_HOST = os.getenv("LARK_HOST")
 AI_NAME = os.getenv("AI_NAME")
-
 
 # init service
 message_api_client = MessageApiClient(APP_ID, APP_SECRET, LARK_HOST)
@@ -74,13 +74,13 @@ def message_receive_event_handler(req_data: MessageReceiveEvent):
                 if_mention_ai = False
                 for mention in message.mentions:
                     # print(mention.name, mention.id, mention.id.open_id)
-                    if_mention_ai =  mention.name == AI_NAME # 提到了ai
+                    if_mention_ai = mention.name == AI_NAME  # 提到了ai
                     req_text.replace(mention.key, "")
                 #         for end
                 if if_mention_ai:
                     text_content = resp_replace(snnd_openai_text(req_text, open_id))
                     # text_content_resp = str({"text": text_content.capitalize()})
-                        # .replace("\n","")
+                    # .replace("\n","")
                     text_content_resp = "{\"text\":\"" + str(text_content.capitalize()) + "\"}"
                     # print("回复你 text_content_resp--- 》" + text_content_resp)
                     message_api_client.send_reply_text_with_message_id(message.message_id, text_content_resp)
@@ -119,8 +119,8 @@ if __name__ == "__main__":
     # init()
     # 开发运行
     # app.run(host="0.0.0.0", port=8080, debug=True)
+    port = 8080
     # 服务器运行
-    server = pywsgi.WSGIServer(('0.0.0.0', 8080), app)
-    print("启动成功")
+    server = pywsgi.WSGIServer(('0.0.0.0', port), app)
+    print("启动成功, 端口：", port)
     server.serve_forever()
-

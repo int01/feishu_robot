@@ -10,7 +10,8 @@ from flask import Flask, jsonify
 
 from gevent import pywsgi
 
-from openaiApi35 import snnd_openai_text
+# from openaiApi35 import snnd_openai_text
+from openaiApi3 import snnd_openai_text
 from utils import resp_replace
 from redisUtil import if_msg_value_repetition
 
@@ -119,7 +120,7 @@ if __name__ == "__main__":
     # 开发运行
     # app.run(host="0.0.0.0", port=8080, debug=True)
     # 服务器运行
-    server = pywsgi.WSGIServer(('0.0.0.0', 3000), app)
+    server = pywsgi.WSGIServer(('0.0.0.0', 8080), app)
     print("启动成功")
     server.serve_forever()
 

@@ -11,7 +11,7 @@ from flask import Flask, jsonify
 from gevent import pywsgi
 
 # from openaiApi35 import snnd_openai_text
-from openaiApi3 import snnd_openai_text
+from openaiApi35 import snnd_openai_text
 from utils import resp_replace
 from redisUtil import if_msg_value_repetition
 
@@ -19,7 +19,7 @@ from dotenv import load_dotenv, find_dotenv
 
 # load env parameters form file named .env
 # load_dotenv(find_dotenv())
-load_dotenv(dotenv_path='.aichatenv', override=True)
+load_dotenv(dotenv_path='.env.aichat', override=True)
 
 app = Flask(__name__)
 
@@ -118,9 +118,10 @@ def callback_event_handler():
 if __name__ == "__main__":
     # init()
     # 开发运行
-    # app.run(host="0.0.0.0", port=8080, debug=True)
     port = 8080
+    app.run(host="0.0.0.0", port=port, debug=True)
+
     # 服务器运行
-    server = pywsgi.WSGIServer(('0.0.0.0', port), app)
-    print("启动成功, 端口：", port)
-    server.serve_forever()
+    # server = pywsgi.WSGIServer(('0.0.0.0', port), app)
+    # print("启动成功, 端口：", port)
+    # server.serve_forever()
